@@ -38,9 +38,9 @@
             </thead>
 
             <tbody>
-                <tr *ngFor="let memo of memos">
+                <tr *ngFor='let memo of memosFiltres'>
                     <td>
-                        <img *ngIf="showImage"
+                        <img *ngIf='showImage'
                             [src]='memo.imageUrl'
                             [title]='memo.memoTitre'
                             [style.width.px]='imageLargeur'
@@ -49,7 +49,7 @@
                     <td>{{memo.memoTitre}}</td>
                     <td>{{memo.memoDate | date }} </td>
                     <td>{{memo.memoContenu}}</td>
-                    <td>{{memo.memoDivers}}</td>
+                    <td>{{memo.memoDivers | lowercase | convertToSpaces: '-'}}</td>
                     <td>{{memo.memoPrix | currency:'EUR':'symbol':'1.2-2'}} </td>
                     <td>{{memo.memoStarRating}}</td>
                 </tr>
