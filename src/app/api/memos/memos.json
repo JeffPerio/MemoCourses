@@ -35,8 +35,8 @@
     "memoDate": "04/11/2023",
     "memoContenu": "Pour scier des trucs",
     "memoDivers": "Ikea ou carrefour",
-    "price": 11.55,
-    "starRating": 3.7,
+    "memoPrix": 11.55,
+    "memoStarRating": 3.7,
     "imageUrl": "assets/images/saw.png"
   },
   {
@@ -46,7 +46,7 @@
     "memoContenu": "Manette Xboite sans fil",
     "memoDivers": "Sans il pour plus de souplesse",
     "memoPrix": 49.99,
-    "starRating": 4.6,
+    "memoStarRating": 4.6,
     "imageUrl": "assets/images/xbox-controller.png"
   }
 ]
