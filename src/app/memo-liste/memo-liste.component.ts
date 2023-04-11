@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { InterfaceMemo } from './interfaceMemo';
+import { MemoService } from '../memo/memo.service';
 
 @Component({
   selector: 'app-memo-liste',
@@ -12,8 +13,14 @@ export class MemoListeComponent implements OnInit {
   imageLargeur: number = 50;
   imageMarge: number = 2;
   showImage: boolean = false;
-
+  //Liste des mémos
+  memosFiltres: InterfaceMemo[] = [];
+  memos: InterfaceMemo[] = []
+  //Filtre pour la liste des produits
   private _filtreListe: string = '';
+
+  //Constructeur et injection du service
+  constructor(private memoService : MemoService) { }
 
   /**
    * Custom Get et Set pour le filtre e la liste
@@ -47,8 +54,9 @@ export class MemoListeComponent implements OnInit {
    * Méthode pour initialiser le filtre
    */
   ngOnInit(): void {
-    //Appel au setter du filtre
-    this.filtreListe = 'Effer';
+    //Appel au service pour récupérer la data
+    this.memos = this.memoService.getMemos();
+    this.memosFiltres = this.memoService.getMemos();
   }
 
   /**
@@ -58,28 +66,4 @@ export class MemoListeComponent implements OnInit {
   onImportanceClicked(message : string): void {
     this.pageTitle = 'Mémo Liste : ' + message;
   }
-  memosFiltres: InterfaceMemo[] = [];
-
-  memos: InterfaceMemo[] = [
-    {
-      "memoId": 1,
-      "memoTitre": "Efferalgan",
-      "memoDate": "04/02/2023",
-      "memoContenu": "3 boites effervescent + 1 gellule",
-      "memoDivers": "AHGX-45",
-      "memoPrix": 9.99,
-      "memoStarRating": 4.8,
-      "imageUrl": "assets/images/efferalgan.jpg"
-    },
-    {
-      "memoId": 2,
-      "memoTitre": "Chaises",
-      "memoDate": "04/01/2023",
-      "memoContenu": "4 chaises pour cuisine",
-      "memoDivers": "OIPGUY-65",
-      "memoPrix": 49.999,
-      "memoStarRating": 4.2,
-      "imageUrl": "assets/images/chaises.jpg"
-    }
-  ]
 }
