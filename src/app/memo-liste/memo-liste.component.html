@@ -51,7 +51,11 @@
                     <td>{{memo.memoContenu}}</td>
                     <td>{{memo.memoDivers | lowercase | convertToSpaces: '-'}}</td>
                     <td>{{memo.memoPrix | currency:'EUR':'symbol':'1.2-2'}} </td>
-                    <td>{{memo.memoStarRating}}</td>
+                    <td>
+                        <app-star [importance]='memo.memoStarRating'
+                        (importanceClicked)='onImportanceClicked($event)'>
+                        </app-star>
+                    </td>
                 </tr>
             </tbody>
         </table>

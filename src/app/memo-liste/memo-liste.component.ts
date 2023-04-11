@@ -51,6 +51,13 @@ export class MemoListeComponent implements OnInit {
     this.filtreListe = 'Effer';
   }
 
+  /**
+   * Méthode de l'action lors du click sur le composant étoile
+   * @param message message transmis par le composant Star
+   */
+  onImportanceClicked(message : string): void {
+    this.pageTitle = 'Mémo Liste : ' + message;
+  }
   memosFiltres: InterfaceMemo[] = [];
 
   memos: InterfaceMemo[] = [
