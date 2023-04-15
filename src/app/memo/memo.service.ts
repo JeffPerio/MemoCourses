@@ -1,65 +1,38 @@
 import { Injectable } from '@angular/core';
 import { InterfaceMemo } from '../memo-liste/interfaceMemo';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, catchError, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MemoService {
 
-  constructor() { }
+  //Url du webserveur, ici est le fichier JSON portant les data pour ne pas avoir besoin de setup le serveur dans le tuto
+  private memoUrl = 'api/memos/memos.json';
 
-  getMemos():InterfaceMemo[] {
-    return [
-      {
-        "memoId": 1,
-        "memoTitre": "Efferalgan",
-        "memoDate": "04/02/2023",
-        "memoContenu": "3 boites effervescent + 1 gellule",
-        "memoDivers": "YGCHGB-965",
-        "memoPrix": 9.99,
-        "memoStarRating": 4.8,
-        "imageUrl": "assets/images/efferalgan.jpg"
-      },
-      {
-        "memoId": 2,
-        "memoTitre": "Chaises",
-        "memoDate": "04/01/2023",
-        "memoContenu": "4 chaises pour cuisine",
-        "memoDivers": "DRFTUGHB-92",
-        "memoPrix": 49.999,
-        "memoStarRating": 4.2,
-        "imageUrl": "assets/images/chaises.jpg"
-      },
-      {
-        "memoId": 5,
-        "memoTitre": "Marteau",
-        "memoDate": "04/11/2023",
-        "memoContenu": "Marteau pour clouer des trucs",
-        "memoDivers": "POIIU-465",
-        "memoPrix": 9.99,
-        "memoStarRating": 4.8,
-        "imageUrl": "assets/images/hammer.png"
-      },
-      {
-        "memoId": 8,
-        "memoTitre": "Scie",
-        "memoDate": "04/11/2023",
-        "memoContenu": "Pour scier des trucs",
-        "memoDivers": "DFRT-41",
-        "memoPrix": 11.55,
-        "memoStarRating": 3.7,
-        "imageUrl": "assets/images/saw.png"
-      },
-      {
-        "memoId": 10,
-        "memoTitre": "Manette Xboite",
-        "memoDate": "04/11/2023",
-        "memoContenu": "Manette Xboite sans fil",
-        "memoDivers": "DXCFGVBH-6454",
-        "memoPrix": 49.99,
-        "memoStarRating": 4.6,
-        "imageUrl": "assets/images/xbox-controller.png"
-      }
-    ]
+  constructor(private http: HttpClient) { }
+
+  getMemos():Observable<InterfaceMemo[]> {
+    return this.http.get<InterfaceMemo[]>(this.memoUrl).pipe(
+      tap(data => console.log('All : ', JSON.stringify(data))), 
+      catchError(this.handleError)
+    );
+  }
+
+  private handleError(err: HttpErrorResponse) {
+    // in a real world app, we may send the server to some remote logging infrastructure
+    // instead of just logging it to the console
+    let errorMessage = '';
+    if (err.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      errorMessage = `An error occurred: ${err.error.message}`;
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
+    }
+    console.error(errorMessage);
+    return throwError(() => errorMessage);
   }
 }

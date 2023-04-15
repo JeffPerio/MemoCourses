@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { InterfaceMemo } from './interfaceMemo';
 import { MemoService } from '../memo/memo.service';
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'app-memo-liste',
   templateUrl: './memo-liste.component.html',
   styleUrls: ['./memo-liste.component.css']
 })
-export class MemoListeComponent implements OnInit {
+export class MemoListeComponent implements OnInit, OnDestroy {
 
   pageTitle: string = 'Mémo Liste';
   imageLargeur: number = 50;
@@ -18,6 +19,11 @@ export class MemoListeComponent implements OnInit {
   memos: InterfaceMemo[] = []
   //Filtre pour la liste des produits
   private _filtreListe: string = '';
+
+  //Message d'erreur
+  errorMessage: string = '';
+  //Stockage de l'abonnement aux data
+  sub!: Subscription;
 
   //Constructeur et injection du service
   constructor(private memoService : MemoService) { }
@@ -51,12 +57,26 @@ export class MemoListeComponent implements OnInit {
   }
 
   /**
-   * Méthode pour initialiser le filtre
+   * Méthode pour initialiser le filtre a l'initialisation du composant
+   * abonnement au service qui renvoie les données
    */
   ngOnInit(): void {
     //Appel au service pour récupérer la data
-    this.memos = this.memoService.getMemos();
-    this.memosFiltres = this.memoService.getMemos();
+    this.sub = this.memoService.getMemos().subscribe({
+      next: data => {
+        this.memos = data;
+        this.memosFiltres = this.memos;
+      },
+      error: err => this.errorMessage = err
+    });
+  }
+
+  /**
+   * Méthode a la destruction du composant
+   * désabonnement au service
+   */
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
   /**
