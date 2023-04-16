@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InterfaceMemo } from '../memo-liste/interfaceMemo';
+import { MemoService } from '../memo-service/memo.service';
 
 @Component({
   templateUrl: './memo-detail.component.html',
@@ -10,23 +11,23 @@ export class MemoDetailComponent implements OnInit{
 
   pageTitle:string = 'Memo Detail'
   memo: InterfaceMemo | undefined;
+  //Message d'erreur
+  errorMessage: string = '';
 
   constructor(private route: ActivatedRoute,
-              private router: Router) {}
+              private router: Router,
+              private memoService : MemoService) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.pageTitle += ` : ${id}`;
-    this.memo = {
-      "memoId": 1,
-      "memoTitre": "Efferalgan",
-      "memoDate": "04/02/2023",
-      "memoContenu": "3 boites effervescent + 1 gellule",
-      "memoDivers": "YGCHGB-965",
-      "memoPrix": 9.99,
-      "memoStarRating": 4.8,
-      "imageUrl": "assets/images/efferalgan.jpg"
-    }
+    if(id) { this.getMemo(id); }
+  }
+
+  getMemo(id: number): void {
+    this.memoService.getMemo(id).subscribe({
+      next: memo => this.memo = memo,
+      error: err => this.errorMessage = err
+    });
   }
 
   onBack(): void {

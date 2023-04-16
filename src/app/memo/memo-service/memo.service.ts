@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { InterfaceMemo } from '../memo-liste/interfaceMemo';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, tap, throwError } from 'rxjs';
+import { Observable, catchError, map, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,16 @@ export class MemoService {
       tap(data => console.log('All : ', JSON.stringify(data))), 
       catchError(this.handleError)
     );
+  }
+
+  // Get one product
+  // Since we are working with a json file, we can only retrieve all products
+  // So retrieve all products and then find the one we want using 'map'
+  getMemo(id: number): Observable<InterfaceMemo | undefined> {
+    return this.getMemos()
+      .pipe(
+        map((memos: InterfaceMemo[]) => memos.find(m => m.memoId === id))
+      );
   }
 
   private handleError(err: HttpErrorResponse) {
