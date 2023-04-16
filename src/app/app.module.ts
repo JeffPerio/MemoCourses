@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MemoDetailComponent } from './memo/memo-detail/memo-detail.component'
 import { WelcomeComponent } from "./home/welcome.component";
 import { RouterModule } from "@angular/router";
+import { MemoDetailGuard } from "./memo/memo-detail/memo-detail.guard";
 
 @NgModule({
     declarations: [
@@ -24,7 +25,11 @@ import { RouterModule } from "@angular/router";
         HttpClientModule,
         RouterModule.forRoot([
             { path: 'memos', component: MemoListeComponent },
-            { path: 'memos/:id', component: MemoDetailComponent },
+            { 
+                path: 'memos/:id',
+                canActivate: [MemoDetailGuard],
+                component: MemoDetailComponent
+            },
             { path: 'welcome', component: WelcomeComponent },
             { path: '', redirectTo: 'welcome', pathMatch:'full' },
             { path: '**', redirectTo: 'welcome', pathMatch: 'full'}

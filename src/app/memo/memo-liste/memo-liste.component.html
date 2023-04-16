@@ -46,7 +46,11 @@
                             [style.width.px]='imageLargeur'
                             [style.margin.px]='imageMarge'>
                     </td>
-                    <td>{{memo.memoTitre}}</td>
+                    <td>
+                        <a [routerLink]="['/memos', memo.memoId]">
+                            {{memo.memoTitre}}
+                        </a>
+                    </td>
                     <td>{{memo.memoDate | date }} </td>
                     <td>{{memo.memoContenu}}</td>
                     <td>{{memo.memoDivers | lowercase | convertToSpaces: '-'}}</td>
