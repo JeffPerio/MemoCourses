@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { InterfaceMemo } from './interfaceMemo';
-import { MemoService } from '../memo/memo.service';
+import { MemoService } from '../memo-service/memo.service';
 import { Subscription } from 'rxjs'
 
 @Component({
-  selector: 'app-memo-liste',
   templateUrl: './memo-liste.component.html',
   styleUrls: ['./memo-liste.component.css']
 })
